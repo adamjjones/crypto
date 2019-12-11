@@ -11,7 +11,6 @@ const CoinInfo = props => {
     )
     const json = JSON.parse(resp.data.contents)
     setInfo(json)
-    console.log(json)
   }
 
   useEffect(() => {
@@ -19,29 +18,26 @@ const CoinInfo = props => {
   }, [])
 
   return (
-    <div className="coins">
-      <h2>Cryptocurrency Information</h2>
+    <div className="coins" key="coin">
+      <h3>Cryptocurrency Information</h3>
       {info.data.map(coin => {
         const round = coin.quote.USD.price.toFixed(2)
         const roundper = coin.quote.USD.percent_change_24h.toFixed(2)
         return (
-          <>
-            <div className="center-align card-panel hoverable">
-              <span>{coin.name}</span>
-              <span className="coin-name">
-                {coin.symbol} {':'} &nbsp;
+          <div className="center-align card-panel hoverable chip" key={coin.name}>
+            <span>{coin.name}</span>
+            <span className="coin-name">
+              {coin.symbol} {':'} &nbsp;
             </span>
-              <span className="price">
-                {'$'}
-                {round} &nbsp;
+            <span className="price">
+              {'$'}
+              {round} &nbsp;
             </span>
-              <span className="percent">{roundper}%</span>
-              {/* <span className="name">({coin.name})</span> */}
-            </div>
-          </>
+            <span className="percent">{roundper}%</span>
+          </div>
         )
       })}
-    </div>
+    </div >
   )
 }
 export default CoinInfo
