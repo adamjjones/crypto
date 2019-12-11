@@ -11,8 +11,17 @@ body {
   height: 200%;
   width: 100%;
   background-image: url('./components/images/bitcoin.jpg');
-  color: white;
+  color: black;
+  font-size: 36pt;
   font-weight: bold;
+}
+
+.card-panel {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  /* flex-direction: column; */
+  opacity: 0.5;
 }
 
 .coins {
@@ -26,32 +35,8 @@ body {
   flex-direction: flex-start;
 }
 
-.coin-name {
+h2 {
   display: flex;
-  justify-content: flex-start;
-  padding-top: 10px;
-}
-
-.price {
-  width: 50px;
-  float: left;
-  margin-left: 100px;
-}
-
-span {
-  margin-right: 75px;
-}
-
-.name {
-  width: 200px;
-  float: right;
-  margin-left: 150px;
-}
-
-td {
-  float: left;
-}
-
-.percent {
-  float: right;
+  justify-content: center;
+  color: #ffffff;
 }
