@@ -26,6 +26,10 @@ const CoinInfo = props => {
             const round = coin.quote.USD.price.toFixed(2)
             const roundper = coin.quote.USD.percent_change_24h.toFixed(2)
             const moreInfoUrl = `/MoreInfo/${coin.id}/`
+            const coinIsExpanded = props.expanded.filter(id => {
+              return id === coin.id
+            }).length > 0;
+            // setCoinExpansion
             return (
 
               <div className="col xs12 m6" key={idx}>
@@ -43,14 +47,13 @@ const CoinInfo = props => {
                   </div>
                   <Router>
                     <Switch>
-                      <Route path={moreInfoUrl} exact>
-                        <MoreInfo coin={coin} />
-                      </Route>
                     </Switch>
                     {/* <Route path="/CoinInfo" component={CoinInfo} /> */}
                     <div className="card-action">
-                      <Link to={moreInfoUrl}>More Info</Link>
-                      {/* <Link to="/CoinInfo">Refresh</Link> */}
+                      <a onClick={() => { props.setCoinExpansion(coin.id, !coinIsExpanded) }}>
+                        {coinIsExpanded ? "Less Info" : "More Info"}
+                      </a>
+                      {coinIsExpanded ? <MoreInfo coin={coin} /> : <Fragment />}
                     </div>
                   </Router>
                 </div>

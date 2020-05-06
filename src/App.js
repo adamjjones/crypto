@@ -8,6 +8,16 @@ import moment from 'moment'
 const App = props => {
 
   const [coins, setCoins] = useState([])
+  const [expanded, setExpanded] = useState([])
+
+  const setCoinExpansion = (id, value) => {
+    let ids = expanded.filter((c) => {
+      return c !== id
+    })
+    if (value)
+      ids.push(id)
+    setExpanded(ids)
+  }
 
   const getCoins = async () => {
 
@@ -41,12 +51,15 @@ const App = props => {
       getCoins()
   }, [coins])
 
+  console.log('expanded', expanded)
   return (
     <div>
-      <CoinInfo coins={coins} />
+      <CoinInfo coins={coins} expanded={expanded}
+        setCoinExpansion={setCoinExpansion} />
       <Router>
         <Switch>
-          <Route exact component={MoreInfo} path="/MoreInfo" />
+          <Route exact component={MoreInfo}
+            path="/MoreInfo" />
         </Switch>
       </Router>
     </div>
