@@ -3,28 +3,47 @@ import axios from 'axios'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import CoinInfo from './components/CoinInfo'
 import MoreInfo from './components/MoreInfo'
+import moment from 'moment'
 
 const App = props => {
 
-  const [info, setInfo] = useState([])
+  const [coins, setCoins] = useState([])
 
-  const getData = async () => {
-    console.log(props)
+  const getCoins = async () => {
+
+    const now = moment().format('YYYYMMDDHH')
+    // localStorage.removeItem('coins')
+
+    const localCoins = localStorage.getItem('coins')
+    const coinsdate = localStorage.getItem('coinsdate')
+
+    console.log('now', now)
+    console.log('coinsdate', coinsdate)
+    if (localCoins && coinsdate && coinsdate === now) {
+      const json = JSON.parse(localCoins)
+      console.log("using cached coin list from localstorage", json)
+      setCoins(json.data.contents.data)
+      return
+    }
+
     const resp = await axios.get(
-      // `https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?CMC_PRO_API_KEY=76b58b26-5c6a-46d7-84e9-de18c7e824bd`
       `https://api.allorigins.win/get?url=https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=76b58b26-5c6a-46d7-84e9-de18c7e824bd`
     )
-    const contents = JSON.parse(resp.data.contents)
-    setInfo(contents.data)
+    console.log("coin list NOT cached, fetched from API", resp)
+    resp.data.contents = JSON.parse(resp.data.contents)
+    setCoins(resp.data.contents.data)
+    localStorage.setItem('coins', JSON.stringify(resp))
+    localStorage.setItem('coinsdate', now)
   }
 
   useEffect(() => {
-    getData()
-  }, [])
+    if (!coins.length)
+      getCoins()
+  }, [coins])
 
   return (
     <div>
-      <CoinInfo info={info} />
+      <CoinInfo coins={coins} />
       <Router>
         <Switch>
           <Route exact component={MoreInfo} path="/MoreInfo" />

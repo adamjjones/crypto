@@ -21,9 +21,9 @@ body {
 }
 
 div.col {
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  margin: 10px;
+  margin: 10px; */
   opacity: 0.8;
 }
 

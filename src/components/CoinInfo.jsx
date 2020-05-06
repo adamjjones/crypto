@@ -4,18 +4,25 @@ import MoreInfo from "./MoreInfo"
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 const CoinInfo = props => {
-
   const More = () => {
     return <MoreInfo more={props} />
   }
-
+  const sortByName = (a, b) => {
+    return - a.name.localeCompare(b.name);
+  }
+  const sortByPrice = (a, b) => {
+    return b.quote.USD.price - a.quote.USD.price
+  }
+  const sortBy24hPercentChange = (a, b) => {
+    return b.quote.USD.percent_change_24h - a.quote.USD.percent_change_24h
+  }
   return (
     <div className="coins" key="coin">
       <Fragment>
 
         <h3>Cryptocurrency Information</h3>
         <div className="content">
-          {props.info.map((coin, idx) => {
+          {props.coins.sort(sortByPrice).map((coin, idx) => {
             const round = coin.quote.USD.price.toFixed(2)
             const roundper = coin.quote.USD.percent_change_24h.toFixed(2)
             const moreInfoUrl = `/MoreInfo/${coin.id}/`
@@ -37,7 +44,7 @@ const CoinInfo = props => {
                   <Router>
                     <Switch>
                       <Route path={moreInfoUrl} exact>
-                        <MoreInfo {...props} />
+                        <MoreInfo coin={coin} />
                       </Route>
                     </Switch>
                     {/* <Route path="/CoinInfo" component={CoinInfo} /> */}
